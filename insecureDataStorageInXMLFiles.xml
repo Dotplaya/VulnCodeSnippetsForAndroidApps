@@ -1,0 +1,73 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- Vulnerable component: Storing sensitive data in plain text -->
+        <meta-data
+            android:name="api_key"
+            android:value="YOUR_API_KEY_HERE" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+
+<!-- In this example, the vulnerable part is the <meta-data> tag within the <application> element. The app is storing 
+sensitive data, such as an API key, in plain text within the XML manifest file. This makes it easy for attackers 
+to extract the API key by decompiling the APK or analyzing the manifest file. -->
+
+<!-- Mitigation  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- Secure storage of sensitive data using Android resource reference -->
+        <meta-data
+            android:name="api_key"
+            android:resource="@string/api_key" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+<!-- In this updated code, the <meta-data> tag references the sensitive data using an Android resource reference
+ (@string/api_key). The actual value of the API key is stored in a separate resource file, typically 
+ res/values/strings.xml, which is not included in this snippet. By using resource references, the sensitive data 
+ can be securely stored separately and not exposed directly in the manifest file. -->
